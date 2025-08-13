@@ -1,0 +1,13 @@
+{
+  "name": "fault",
+  "version": "1.0.0",
+  "description": {
+    "zh_tw": "顯示臺灣本島斷層"
+  },
+  "author": ["bamboo0403"],
+  "dependencies": {
+    "trem": ">=3.1.4"
+  },
+  "resources": [""],
+  "link": ""
+}
