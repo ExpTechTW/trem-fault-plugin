@@ -9,5 +9,5 @@
     "trem": ">=3.1.4"
   },
   "resources": [""],
-  "link": ""
+  "link": "https://github.com/ExpTechTW/trem-fault-plugin"
 }
