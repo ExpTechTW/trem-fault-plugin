@@ -1,3 +1,4 @@
+const { congig } = require("../config/config");
 const path = require("path");
 const fs = require("fs");
 const faultPath = path.join(__dirname, 'resource', 'fault.json');
@@ -5,11 +6,13 @@ const faultPath = path.join(__dirname, 'resource', 'fault.json');
 class Plugin {
   static instance = null;
   #ctx;
+  #config;
   constructor(ctx) {
     if (Plugin.instance) return Plugin.instance;
     this.#ctx = ctx;
-    this.name = "more-station-info";
+    this.#config = null;
     this.logger = null;
+    this.getconfig = () => void 0;
     Plugin.instance = this;
   }
 
@@ -21,6 +24,11 @@ class Plugin {
   onLoad() {
     const { TREM, logger, info, utils } = this.#ctx;
     const event = (event, callback) => TREM.variable.events.on(event, callback);
+    const defaultDir = utils.path.join(info.pluginDir, "./fault/resource/default.yml");
+    const configDir = utils.path.join(info.pluginDir, "./fault/config.yml");
+    this.#config = new config("fault", this.logger, utils.fs, defaultDir, configDir);
+    this.getConfig = this.#config.getConfig;
+    const faultConfig = this.#config.getConfig();
 
     event("MapLoad", (map) => {
       const CoverLayers = ['rts-layer', 'report-markers'];
@@ -37,8 +45,8 @@ class Plugin {
         type: 'line',
         source: 'fault',
         paint: {
-          'line-color': '#ff0000',
-          'line-width': 2
+          'line-color': `${faultConfig.color}`,
+          'line-width': `${faultConfig.width}`
         }
       },beforeLayer);
       fs.readFile(faultPath, 'utf8', (err, data) => {
