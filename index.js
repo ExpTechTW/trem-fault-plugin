@@ -1,5 +1,4 @@
 const path = require("path");
-const { ipcRenderer } = require("electron");
 const fs = require("fs");
 const faultPath = path.join(__dirname, 'resource', 'fault.json');
 
@@ -24,6 +23,14 @@ class Plugin {
     const event = (event, callback) => TREM.variable.events.on(event, callback);
 
     event("MapLoad", (map) => {
+      const CoverLayers = ['rts-layer', 'report-markers'];
+      let beforeLayer;
+      for (let i = CoverLayers.length - 1; i >= 0; i--) {
+        if (map.getLayer(CoverLayers[i])) {
+          beforeLayer = CoverLayers[i];
+          break;
+        }
+      }
       map.addSource('fault', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
       map.addLayer({
         id: 'fault',
@@ -33,7 +40,7 @@ class Plugin {
           'line-color': '#ff0000',
           'line-width': 2
         }
-      },'rts-layer');
+      },beforeLayer);
       fs.readFile(faultPath, 'utf8', (err, data) => {
         if (err) {
           logger.error('斷層資料載入失敗', err);
