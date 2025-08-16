@@ -1,4 +1,4 @@
-const { config } = require("../config/config");
+const config  = require("../config/config");
 const path = require("path");
 const fs = require("fs");
 const faultPath = path.join(__dirname, 'resource', 'fault.json');
