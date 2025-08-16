@@ -45,8 +45,8 @@ class Plugin {
         type: 'line',
         source: 'fault',
         paint: {
-          'line-color': `${faultConfig.color}`,
-          'line-width': `${faultConfig.width}`
+          'line-color': faultConfig.color,
+          'line-width': faultConfig.width
         }
       },beforeLayer);
       fs.readFile(faultPath, 'utf8', (err, data) => {
